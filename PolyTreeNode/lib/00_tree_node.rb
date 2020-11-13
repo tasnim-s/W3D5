@@ -10,13 +10,9 @@ class PolyTreeNode
     end
     
     def parent=(node)
-        unless node == nil
-            @parent.children.delete(self) unless self.parent == nil
-            @parent = node
-            node.children << self
-        else
-            @parent = nil
-        end
+        @parent.children.delete(self) unless self.parent.nil?
+        @parent = node
+        node.children << self unless node.nil?
     end
 
     def add_child(child_node)
@@ -30,25 +26,22 @@ class PolyTreeNode
 
     def dfs(target_value) # for binary tho
         return self if self.value == target_value
-        return nil if self.children.empty?
 
-        left = self.children.first
-        right = self.children.last
+        self.children.each do |child|
+            the_one = child.dfs(target_value)
+            return the_one unless the_one.nil?
+        end
 
-        left.dfs(target_value) || right.dfs(target_value)
+        nil
     end
 
     def bfs(target_value)
-        queue = []
-        queue << self
+        queue = [self]
 
         until queue.empty?
-            # debugger
             first_node = queue.shift
             return first_node if first_node.value == target_value
-            first_node.children.each do |child|
-                queue << child
-            end
+            queue += first_node.children
         end
 
         nil
