@@ -24,7 +24,7 @@ class PolyTreeNode
         child_node.parent = nil
     end
 
-    def dfs(target_value) # for binary tho
+    def dfs(target_value)
         return self if self.value == target_value
 
         self.children.each do |child|
